@@ -1,0 +1,71 @@
+body {
+
+
+
+}
+
+#header {
+
+    display: flex;
+    justify-content: space-between;
+
+}
+
+#wrapper {
+
+margin: auto 0;
+text-align: center;
+width: 100%;
+
+}
+
+.hide {
+
+    display: none;
+
+}
+
+#start-screen {
+
+}
+
+#start-btn {
+
+}
+
+#questions {
+
+
+}
+
+#question-title {
+
+
+}
+
+.question-options {
+
+    display: inline-block;
+    width: 100%;
+    max-width: 300px;
+}
+
+#end {
+
+
+}
+
+#final-score {
+
+
+}
+
+#initials {
+
+
+}
+
+#submit {
+
+
+}
