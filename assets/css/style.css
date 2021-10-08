@@ -1,17 +1,26 @@
-h1 {
+#title {
+    margin-top: 50px;
     margin-bottom: 30px;
+    font-size: 40px;
  }
  
  li {
  
-     font-size: 75%;
-     margin-top: 10px;
+     font-size: 20px;
      list-style-type: none;
+     display: inline-block;
+     margin-top: 20px;
+     width: 100%;
+     max-width: 300px;
      
  }
  
  li:hover {
      background-color: grey;
+ }
+
+ #content {
+    margin: 0 auto;
  }
  
  #header {
@@ -28,16 +37,13 @@ h1 {
  width: 100%;
  
  }
+
+ #startBtn {
+     margin-top: 30px;
+ }
  
  .hide {
  
      display: none;
  
- }
- 
- .question-options {
- 
-     display: inline-block;
-     width: 100%;
-     max-width: 300px;
  }
