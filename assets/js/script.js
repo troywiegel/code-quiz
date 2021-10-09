@@ -9,6 +9,7 @@ var initialsEl = document.querySelector('#initials')
 var submitEl = document.querySelector('#submit')
 var questionNumber = 0
 var score = 0
+var timeLeft = 50
 
 document.getElementById('title').innerHTML = 'Coding Quiz Challenge!'
 document.getElementById('content').innerHTML = 'Try to answer the following code related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!'
@@ -36,21 +37,40 @@ function displayQuestion() {
 
         })
         contentEl.appendChild(quizAnswer)
+
+        function compare() {
+
+            var questionAnswer = document.createElement('div')
+            questionAnswer.setAttribute('id', 'questionAnswer')
+            contentEl.appendChild(questionAnswer)
+
+            if (choiceClicked == questions[questionNumber].correct) {
+
+                score++
+                console.log(score)
+                questionAnswer.textContent = 'Correct! The answer is: ' + questions[questionNumber].correct
+            } else {
+
+                questionAnswer.textContent = 'Wrong! The answer is: ' + questions[questionNumber].correct
+
+            }
+
+        }
     }
     console.log('function worked')
-}
 
-function choiceClicked(event) {
+    function choiceClicked(event) {
 
-    console.log('choice clicked', event)
-    //need to clear previous question content
-    questionNumber++
-    
-    if (questionNumber >= questions.length) {
-        alert('The game is over!')
-        gameOver()
-    } else {
-        displayQuestion()
+        console.log('choice clicked', event)
+        compare()
+        questionNumber++
+
+        if (questionNumber >= questions.length) {
+            alert('The game is over!')
+            gameOver()
+        } else {
+            displayQuestion()
+        }
     }
 
 }
@@ -65,15 +85,23 @@ function gameOver() {
 
 }
 
-// var questionAnswer = document.createElement('div')
-//     questionAnswer.setAttribute('id', 'questionAnswer')
+document.getElementById('startBtn').addEventListener('click', function () {
 
-//     if (choiceClicked == questions[questionNumber].correct) {
+    var clockStart = setInterval(function function1() {
 
-//         score++
-//         questionAnswer.textContent = 'Correct! The answer is: ' + questions[questionNumber].correct
-//     } else {
+        document.getElementById('time').innerHTML = timeLeft + '' + ' seconds remaining'
 
-//         questionAnswer.textContent = 'Wrong! The answer is: ' + questions[questionNumber].correct
+        timeLeft -= 1
+        if (timeLeft <= -1) {
 
-//     }
+            clearInterval(clockStart)
+            document.getElementById('time').innerHTML = 'Time is up, you lose!'
+
+        } else if (questionNumber >= 5 && timeLeft > 0) {
+
+            clearInterval(clockStart)
+            document.getElementById('time').innerHTML = 'You win!'
+        }
+
+    }, 1000)
+})
