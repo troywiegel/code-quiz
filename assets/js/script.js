@@ -1,4 +1,4 @@
-//declaring global variables
+// declaring global variables
 var questionIndex = -1;
 var timeLeft = 0;
 var score = 0;
