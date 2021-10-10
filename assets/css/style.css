@@ -7,8 +7,7 @@
 }
 
 #nav {
-    display: block;
-    background-color: white;
+    
     display: inline-block;
     width: 98vw;
 }
@@ -18,7 +17,7 @@ body {
     background-color: white;
 }
 
-#quizBody {
+#quizContent {
     text-align: center;
 }
 

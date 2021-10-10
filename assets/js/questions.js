@@ -10,7 +10,7 @@ var questions = [
     {
         title: 'What does the === operator mean?',
         choices: ['Loosely equal', 'Strictly equal', 'Loosely does not equal', 'Strictly does not equal'],
-        answer: 'Stricyly equal'
+        answer: 'Strictly equal'
 
     },
     {

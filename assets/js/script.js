@@ -4,7 +4,7 @@ var currentQuestion = -1;
 var timeLeft = 0;
 var timer;
 
-//starts timer once begin button is clicked
+// starts timer once begin button is clicked
 function start() {
 
     timeLeft = 70;
@@ -16,48 +16,48 @@ function start() {
         //proceed to end the game function when timer is below 0 at any time
         if (timeLeft <= 0) {
             clearInterval(timer);
-            endGame();
+            gameOver();
         }
     }, 1000);
 
-    next();
+    question();
 }
 // loops through questions and answers
-function next() {
+function question() {
     currentQuestion++;
 
     if (currentQuestion > questions.length - 1) {
-        endGame();
+        gameOver();
         return;
     }
 
     var quizContent = "<h2>" + questions[currentQuestion].title + "</h2>"
 
-    for (var buttonLoop = 0; buttonLoop < questions[currentQuestion].choices.length; buttonLoop++) {
-        var buttonCode = "<button onclick=\"[ANS]\">[CHOICE]</button>";
-        buttonCode = buttonCode.replace("[CHOICE]", questions[currentQuestion].choices[buttonLoop]);
-        if (questions[currentQuestion].choices[buttonLoop] == questions[currentQuestion].answer) {
-            buttonCode = buttonCode.replace("[ANS]", "correct()");
+    for (var i = 0; i < questions[currentQuestion].choices.length; i++) {
+        var quizAnswer = "<button onclick=\"[answer]\">[choice]</button>";
+        quizAnswer = quizAnswer.replace("[choice]", questions[currentQuestion].choices[i]);
+        if (questions[currentQuestion].choices[i] == questions[currentQuestion].answer) {
+            quizAnswer = quizAnswer.replace("[answer]", "correct()");
         } else {
-            buttonCode = buttonCode.replace("[ANS]", "incorrect()");
+            quizAnswer = quizAnswer.replace("[answer]", "incorrect()");
         }
-        quizContent += buttonCode
+        quizContent += quizAnswer
     }
     document.getElementById("quizBody").innerHTML = quizContent;
 }
 // if answer is right this increases score by 1
 function correct() {
     score += 1;
-    next();
+    question();
 }
 // if answer is wrong this decreases time by 10 seconds
 function incorrect() {
     timeLeft -= 10;
-    next();
+    question();
 }
 
 //stops the timer and brings up end game screen 
-function endGame() {
+function gameOver() {
     clearInterval(timer);
 
     var quizContent = `
