@@ -1,49 +1,47 @@
-#title {
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-size: 40px;
- }
- 
- li {
- 
-     font-size: 20px;
-     list-style-type: none;
-     display: inline-block;
-     margin-top: 20px;
-     width: 100%;
-     max-width: 300px;
-     
- }
- 
- li:hover {
-     background-color: grey;
- }
+.right {
+    float: right;
+}
 
- #content {
-    margin: 0 auto;
- }
- 
- #header {
- 
-     display: flex;
-     justify-content: space-between;
- 
- }
- 
- #wrapper {
- 
- margin: auto 0;
- text-align: center;
- width: 100%;
- 
- }
+.left {
+    float: left;
+}
 
- #startBtn {
-     margin-top: 30px;
- }
- 
- .hide {
- 
-     display: none;
- 
- }
+#nav {
+    display: block;
+    background-color: white;
+    display: inline-block;
+    width: 98vw;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: white;
+}
+
+#quizBody {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    color: black;
+}
+
+button {
+    border: none;
+    background-color: black;
+    color: white;
+    border-radius: 5px;
+    padding: 7px 14px;
+    font-size: 17px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 4px;
+}
+
+button:hover {
+    background-color: grey;
+}
+
+#quiz {
+    text-align: center;
+}

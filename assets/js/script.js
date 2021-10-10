@@ -1,107 +1,116 @@
-// Declaring variables
-var titleEl = document.querySelector('#title')
-var contentEl = document.querySelector('#content')
-var scoresEl = document.querySelector('#scores')
-var timerEl = document.querySelector('#timer')
-var startEl = document.querySelector('#startBtn')
-var finalScoreEl = document.querySelector('#finalScore')
-var initialsEl = document.querySelector('#initials')
-var submitEl = document.querySelector('#submit')
-var questionNumber = 0
-var score = 0
-var timeLeft = 50
+//declaring global variables
+var score = 0;
+var currentQuestion = -1;
+var timeLeft = 0;
+var timer;
 
-document.getElementById('title').innerHTML = 'Coding Quiz Challenge!'
-document.getElementById('content').innerHTML = 'Try to answer the following code related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!'
+//starts timer once begin button is clicked
+function start() {
 
-startEl.addEventListener('click', function () {
+    timeLeft = 70;
+    document.getElementById("timeLeft").innerHTML = timeLeft;
 
-    console.log('start button clicked!');
-    displayQuestion();
-
-})
-
-function displayQuestion() {
-    // clears text from main screen and hides begin button
-    document.getElementById('title').innerHTML = questions[questionNumber].question
-    document.getElementById('content').innerHTML = ''
-    startEl.classList.add('hide')
-
-    // loop to display answers
-    for (let j = 0; j < questions[questionNumber].choices.length; j++) {
-        let quizAnswer = document.createElement('li')
-        quizAnswer.textContent = questions[questionNumber].choices[j]
-        quizAnswer.addEventListener('click', function () {
-
-            choiceClicked(questions[questionNumber].choices[j])
-
-        })
-        contentEl.appendChild(quizAnswer)
-
-        function compare() {
-
-            var questionAnswer = document.createElement('div')
-            questionAnswer.setAttribute('id', 'questionAnswer')
-            contentEl.appendChild(questionAnswer)
-
-            if (choiceClicked == questions[questionNumber].correct) {
-
-                score++
-                console.log(score)
-                questionAnswer.textContent = 'Correct! The answer is: ' + questions[questionNumber].correct
-            } else {
-
-                questionAnswer.textContent = 'Wrong! The answer is: ' + questions[questionNumber].correct
-
-            }
-
+    timer = setInterval(function () {
+        timeLeft--;
+        document.getElementById("timeLeft").innerHTML = timeLeft;
+        //proceed to end the game function when timer is below 0 at any time
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            endGame();
         }
+    }, 1000);
+
+    next();
+}
+// loops through questions and answers
+function next() {
+    currentQuestion++;
+
+    if (currentQuestion > questions.length - 1) {
+        endGame();
+        return;
     }
-    console.log('function worked')
 
-    function choiceClicked(event) {
+    var quizContent = "<h2>" + questions[currentQuestion].title + "</h2>"
 
-        console.log('choice clicked', event)
-        compare()
-        questionNumber++
-
-        if (questionNumber >= questions.length) {
-            alert('The game is over!')
-            gameOver()
+    for (var buttonLoop = 0; buttonLoop < questions[currentQuestion].choices.length; buttonLoop++) {
+        var buttonCode = "<button onclick=\"[ANS]\">[CHOICE]</button>";
+        buttonCode = buttonCode.replace("[CHOICE]", questions[currentQuestion].choices[buttonLoop]);
+        if (questions[currentQuestion].choices[buttonLoop] == questions[currentQuestion].answer) {
+            buttonCode = buttonCode.replace("[ANS]", "correct()");
         } else {
-            displayQuestion()
+            buttonCode = buttonCode.replace("[ANS]", "incorrect()");
         }
+        quizContent += buttonCode
     }
-
+    document.getElementById("quizBody").innerHTML = quizContent;
+}
+// if answer is right this increases score by 1
+function correct() {
+    score += 1;
+    next();
+}
+// if answer is wrong this decreases time by 10 seconds
+function incorrect() {
+    timeLeft -= 10;
+    next();
 }
 
-function gameOver() {
+//stops the timer and brings up end game screen 
+function endGame() {
+    clearInterval(timer);
 
-    console.log('the game ended')
-    document.getElementById('title').innerHTML = 'Thanks for playing!'
-    document.getElementById('content').innerHTML = 'closing statements'
-    //change title to game over message
+    var quizContent = `
+    <h2>Thanks for playing!</h2>
+    <h3>You got ` + score + ` /5</h3>
+    <input type="text" id="name" placeholder="Input Initials"> 
+    <button onclick="setScore()">Submit</button>`;
 
-
+    document.getElementById("quizBody").innerHTML = quizContent;
 }
 
-document.getElementById('startBtn').addEventListener('click', function () {
+// stores the player's score to the local storage
+function setScore() {
+    localStorage.setItem("highscore", score);
+    localStorage.setItem("highscoreName", document.getElementById('name').value);
+    getScore();
+}
 
-    var clockStart = setInterval(function function1() {
+// retrieves the player's highest score attained and displays it on the screen
+function getScore() {
+    var quizContent = `
+    <h2>` + localStorage.getItem("highscoreName") + `'s highscore is:</h2>
+    <h1>` + localStorage.getItem("highscore") + `</h1><br> 
+    
+    <button onclick="clearScore()">Clear score!</button><button onclick="resetGame()">Play Again!</button>
+    
+    `;
 
-        document.getElementById('time').innerHTML = timeLeft + '' + ' seconds remaining'
+    document.getElementById("quizBody").innerHTML = quizContent;
+}
 
-        timeLeft -= 1
-        if (timeLeft <= -1) {
+// clears score names and values if player clicks reset button
+function clearScore() {
+    localStorage.setItem("highscore", "");
+    localStorage.setItem("highscoreName", "");
 
-            clearInterval(clockStart)
-            document.getElementById('time').innerHTML = 'Time is up, you lose!'
+    resetGame();
+}
 
-        } else if (questionNumber >= 5 && timeLeft > 0) {
+// resets the game
+function resetGame() {
+    clearInterval(timer);
+    score = 0;
+    currentQuestion = -1;
+    timeLeft = 0;
+    timer = null;
 
-            clearInterval(clockStart)
-            document.getElementById('time').innerHTML = 'You win!'
-        }
+    document.getElementById("timeLeft").innerHTML = timeLeft;
 
-    }, 1000)
-})
+    var quizContent = `
+    <h1>JavaScript Quiz!</h1>
+    <h2>Try to answer the following code related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h2>
+    <button onclick="start()">Begin</button>`;
+
+    document.getElementById("quizBody").innerHTML = quizContent;
+}
