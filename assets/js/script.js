@@ -1,7 +1,7 @@
 //declaring global variables
-var score = 0;
-var currentQuestion = -1;
+var questionIndex = -1;
 var timeLeft = 0;
+var score = 0;
 var timer;
 
 // starts timer once begin button is clicked
@@ -13,7 +13,7 @@ function start() {
     timer = setInterval(function () {
         timeLeft--;
         document.getElementById("timeLeft").innerHTML = timeLeft;
-        //proceed to end the game function when timer is below 0 at any time
+        // goes to gameOver screen if timer reach less than or equal to 0
         if (timeLeft <= 0) {
             clearInterval(timer);
             gameOver();
@@ -22,28 +22,30 @@ function start() {
 
     question();
 }
-// loops through questions and answers
+// function to loop through questions and answers
 function question() {
-    currentQuestion++;
 
-    if (currentQuestion > questions.length - 1) {
+    questionIndex++;
+
+    // if the player answers the last question in the array it transitions to gameOver screen
+    if (questionIndex > questions.length - 1) {
         gameOver();
         return;
     }
 
-    var quizContent = "<h2>" + questions[currentQuestion].title + "</h2>"
+    var quizContent = "<h2>" + questions[questionIndex].title + "</h2>"
 
-    for (var i = 0; i < questions[currentQuestion].choices.length; i++) {
+    for (var i = 0; i < questions[questionIndex].choices.length; i++) {
         var quizAnswer = "<button onclick=\"[answer]\">[choice]</button>";
-        quizAnswer = quizAnswer.replace("[choice]", questions[currentQuestion].choices[i]);
-        if (questions[currentQuestion].choices[i] == questions[currentQuestion].answer) {
+        quizAnswer = quizAnswer.replace("[choice]", questions[questionIndex].choices[i]);
+        if (questions[questionIndex].choices[i] == questions[questionIndex].answer) {
             quizAnswer = quizAnswer.replace("[answer]", "correct()");
         } else {
             quizAnswer = quizAnswer.replace("[answer]", "incorrect()");
         }
         quizContent += quizAnswer
     }
-    document.getElementById("quizBody").innerHTML = quizContent;
+    document.getElementById("quizContent").innerHTML = quizContent;
 }
 // if answer is right this increases score by 1
 function correct() {
@@ -56,7 +58,7 @@ function incorrect() {
     question();
 }
 
-//stops the timer and brings up end game screen 
+//stops the timer and brings up game over screen 
 function gameOver() {
     clearInterval(timer);
 
@@ -66,7 +68,7 @@ function gameOver() {
     <input type="text" id="name" placeholder="Input Initials"> 
     <button onclick="setScore()">Submit</button>`;
 
-    document.getElementById("quizBody").innerHTML = quizContent;
+    document.getElementById("quizContent").innerHTML = quizContent;
 }
 
 // stores the player's score to the local storage
@@ -82,11 +84,11 @@ function getScore() {
     <h2>` + localStorage.getItem("highscoreName") + `'s highscore is:</h2>
     <h1>` + localStorage.getItem("highscore") + `</h1><br> 
     
-    <button onclick="clearScore()">Clear score!</button><button onclick="resetGame()">Play Again!</button>
+    <button onclick="clearScore()">Clear score</button><button onclick="resetGame()">Play Again</button>
     
     `;
 
-    document.getElementById("quizBody").innerHTML = quizContent;
+    document.getElementById("quizContent").innerHTML = quizContent;
 }
 
 // clears score names and values if player clicks reset button
@@ -101,16 +103,16 @@ function clearScore() {
 function resetGame() {
     clearInterval(timer);
     score = 0;
-    currentQuestion = -1;
+    questionIndex = -1;
     timeLeft = 0;
     timer = null;
 
     document.getElementById("timeLeft").innerHTML = timeLeft;
 
     var quizContent = `
-    <h1>JavaScript Quiz!</h1>
+    <h1> Coding Quiz Challenge!</h1>
     <h2>Try to answer the following code related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</h2>
     <button onclick="start()">Begin</button>`;
 
-    document.getElementById("quizBody").innerHTML = quizContent;
+    document.getElementById("quizContent").innerHTML = quizContent;
 }
