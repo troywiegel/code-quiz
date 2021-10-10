@@ -17,6 +17,10 @@ body {
     background-color: white;
 }
 
+#quiz {
+    text-align: center;
+}
+
 #quizContent {
     text-align: center;
 }
@@ -39,8 +43,4 @@ button {
 
 button:hover {
     background-color: grey;
-}
-
-#quiz {
-    text-align: center;
 }
